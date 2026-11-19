@@ -1,0 +1,234 @@
+@import 'tailwindcss';
+
+/* ───────────────────────────────────────────────────────────
+   SUTO — design tokens
+   Ivory paper, ink type, stone neutrals, one accent: Dhaka Brick.
+   ─────────────────────────────────────────────────────────── */
+@theme {
+  /* Neutrals */
+  --color-ivory: #f3efe7;
+  --color-paper: #f8f5ef;
+  --color-bone: #e9e3d8;
+  --color-stone: #d5ccbd;
+  --color-sand: #b6ab98;
+  --color-taupe: #8a8274;
+  --color-smoke: #5b5750;
+  --color-graphite: #2a2926;
+  --color-ink: #141412;
+
+  /* Accent — Dhaka Brick */
+  --color-brick: #9e3b1e;
+  --color-brick-deep: #7a2c15;
+  --color-brick-light: #c4532d;
+  --color-brick-wash: #f1e1d7;
+
+  /* Utility */
+  --color-moss: #3e4a3c;
+  --color-line: rgb(20 20 18 / 0.12);
+  --color-line-strong: rgb(20 20 18 / 0.24);
+
+  --font-sans: 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', 'Times New Roman', ui-serif, Georgia, serif;
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+
+  --tracking-label: 0.16em;
+  --tracking-wide-logo: 0.06em;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --breakpoint-xs: 26rem;
+  --breakpoint-3xl: 112rem;
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-fade-in: fade-in 0.6s var(--ease-out-expo) both;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  body {
+    @apply bg-ivory font-sans text-ink;
+    font-variation-settings: 'wdth' 100;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-brick);
+    color: var(--color-paper);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brick);
+    outline-offset: 3px;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  img {
+    -webkit-user-drag: none;
+  }
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+  /* number inputs without spinners */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@layer components {
+  /* Small uppercase label — the brand's voice for metadata */
+  .label {
+    font-size: var(--text-2xs);
+    line-height: 1rem;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  /* Expanded grotesk display — campaign headlines */
+  .display {
+    font-family: var(--font-sans);
+    font-variation-settings: 'wdth' 118;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    line-height: 0.86;
+  }
+  .display-wide {
+    font-variation-settings: 'wdth' 125;
+  }
+  /* Editorial serif */
+  .serif {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .container-x {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1rem;
+    max-width: 120rem;
+  }
+  @media (min-width: 40rem) {
+    .container-x {
+      padding-inline: 1.5rem;
+    }
+  }
+  @media (min-width: 64rem) {
+    .container-x {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  /* Underline link — draws from left on hover */
+  .link-u {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.45s var(--ease-out-expo);
+    padding-bottom: 2px;
+  }
+  .link-u:hover,
+  .link-u:focus-visible,
+  .link-u[aria-current='page'] {
+    background-size: 100% 1px;
+  }
+  .link-u-static {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 0.45s var(--ease-out-expo);
+  }
+  .link-u-static:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+
+  /* Form fields */
+  .field {
+    @apply block w-full border border-line-strong bg-paper px-4 py-3.5 text-sm text-ink transition-colors duration-200 outline-none placeholder:text-taupe hover:border-smoke focus:border-ink;
+    border-radius: 0;
+  }
+  .field[aria-invalid='true'] {
+    @apply border-brick;
+  }
+  .field-label {
+    @apply mb-2 block text-xs font-medium tracking-wide text-smoke;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hairline grain to give flat colour fields a printed feel */
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
